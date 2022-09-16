@@ -43,11 +43,11 @@ contract ERC20 is IERC20 {
         mint(initialSupply, shop);
     }
 
-    function balanceOf(address account) external {
+    function balanceOf(address account) public view returns(uint)  {
         return balances[account];
     }
 
-    function transfer(address to, uint amount) external {
+    function transfer(address to, uint amount) external enoughTokens(msg.sender, amount) {
         balances[msg.sender] -= amount;
         balances[to] += amount;
         emit Transfer(msg.sender, to, amount)
@@ -61,8 +61,31 @@ contract ERC20 is IERC20 {
         emit Transfer(address(0), shop, amount);
     }
 
-    function allowance(address _owner, address spender) external view returns(uint) {
+    function burn(address from, uint amount) public onlyOwner {
+        _beforeTokenTransfer(from, address(0), amount);
+        require(balances[_from] >= amount, "no amount to burn")
+        balances[_from] -= amount;
+        totalTokens -= amount;
+    }
 
+    function allowance(address _owner, address spender) public view returns(uint) {
+        return allowances[_owner][spender];
+    }
+
+    function approve(address spender, uint amount) public {
+        allowances[msg.sender][spender] = amount;
+        emit Approve(msg.sender, spender, amount);
+        
+    }
+
+    function transferFrom(address from, address to, uint amount) external enoughTokens(from, amount) {
+        _beforeTokenTransfer(from, to, amount);
+        require(allowances[from][to] >= amount, "no allowance");
+        allowances[from][to] -= amount;
+
+        balances[from] -= amount;
+        balances[to] += amount;
+        emit Transfer(from, to, amount);
     }
 
     //OpenZeppelin addition

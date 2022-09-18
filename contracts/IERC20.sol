@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
 interface IERC20 {
@@ -9,7 +10,7 @@ interface IERC20 {
     function transfer(address to, uint value) external;
 
     
-    function allowance(address owner address spender) external view returns(uint)
+    function allowance(address owner, address spender) external view returns(uint);
     function approve(address spender, uint value) external;
     function transferFrom(address from, address to, uint value) external;
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "./IERC20.sol";
@@ -36,9 +37,9 @@ contract ERC20 is IERC20 {
         _;
     }
 
-    constructor(string memory name, string memory symbol, uint initialSupply, address shop) {
-        _name = name;
-        _symbol = symbol;
+    constructor(string memory name_, string memory symbol_, uint initialSupply, address shop) {
+        _name = name_;
+        _symbol = symbol_;
         owner = msg.sender;
         mint(initialSupply, shop);
     }
@@ -50,7 +51,7 @@ contract ERC20 is IERC20 {
     function transfer(address to, uint amount) external enoughTokens(msg.sender, amount) {
         balances[msg.sender] -= amount;
         balances[to] += amount;
-        emit Transfer(msg.sender, to, amount)
+        emit Transfer(msg.sender, to, amount);
     }
 
     function mint(uint amount, address shop) public onlyOwner {
@@ -63,8 +64,8 @@ contract ERC20 is IERC20 {
 
     function burn(address from, uint amount) public onlyOwner {
         _beforeTokenTransfer(from, address(0), amount);
-        require(balances[_from] >= amount, "no amount to burn")
-        balances[_from] -= amount;
+        require(balances[from] >= amount, "no amount to burn");
+        balances[from] -= amount;
         totalTokens -= amount;
     }
 

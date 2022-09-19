@@ -55,5 +55,6 @@ contract Shop {
         token.transfer(msg.sender, tokens2Buy);
         emit Bought(tokens2Buy, msg.sender);
     }
+    //@todo write function where owner charge off money for tokens
 
 }

@@ -12,3 +12,21 @@ https://hardhat.org/hardhat-network/docs/guides/forking-other-networks
 
 https://hardhat.org/hardhat-runner/plugins
 
+
++erc20
+~erc721
+erc1155
+
+oracles
+proxies/upgradable contracts
+farming/flashloans
+governance
+assembly
+
+
+defi:
+    MasterChef(sushiswap)
+    Compound
+    uniswap
+    aave
+    balancer

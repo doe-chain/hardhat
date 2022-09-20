@@ -15,7 +15,7 @@ interface IERC721 {
     function safeTransferFrom(address from, address to, uint tokenId) external;
 
     //realization like in OZ - same name but different arguments count, "data" for message or smth
-    function safeTransferFrom(address from, address to, uint tokenId, bytes calldata data) external;
+    //function safeTransferFrom(address from, address to, uint tokenId, bytes calldata data) external;
 
     function approve(address to, uint tokenId) external;
 
@@ -23,5 +23,5 @@ interface IERC721 {
 
     function getApproved(uint tokenId) external view returns(address);
 
-    function getApprovedForAll(address owner, address operator) external view returns(bool);
+    function isApprovedForAll(address owner, address operator) external view returns(bool);
 } 

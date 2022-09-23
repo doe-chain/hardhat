@@ -26,7 +26,9 @@ interface IERC1155 {
 
     event URI(string value, uint indexed id);
 
+    //+
     function balanceOf(address account, uint id) external view returns(uint);
+    //+
     function balanceOfBatch(
         address[] calldata accounts, 
         uint[] calldata ids

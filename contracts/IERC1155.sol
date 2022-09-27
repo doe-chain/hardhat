@@ -34,16 +34,19 @@ interface IERC1155 {
         uint[] calldata ids
     ) external view returns(uint[] memory);
 
+    //+
     function setApprovalForAll(
         address operator,
         bool approved
     ) external;
 
+    //+
     function isApprovedForAll(
         address account, 
         address operator
     ) external view returns(bool);
 
+    //+
     function safeTransferFrom(
         address from,
         address to,
@@ -52,6 +55,7 @@ interface IERC1155 {
         bytes calldata data
     ) external;
     
+    //+
     function safeBatchTransferFrom(
         address from,
         address to,

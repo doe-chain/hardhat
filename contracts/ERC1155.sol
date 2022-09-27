@@ -12,8 +12,7 @@ contract ERC1155 is IERC1155, IERC1155MetadataUri {
     string private _uri;
 
     constructor(string memory uri_) {
-        //@todo _setUri function
-        //_setUri(uri_);
+        _setUri(uri_);
     }
 
     function uri(uint) external view virtual returns(string memory) {
@@ -24,8 +23,8 @@ contract ERC1155 is IERC1155, IERC1155MetadataUri {
     function balanceOf(address account, uint id) public view returns(uint) {
         require(account!=address(0));
         return _balances[id][account];
-    }
-
+    } 
+    
     function balanceOfBatch(
         address[] calldata accounts, 
         uint[] calldata ids
@@ -39,5 +38,183 @@ contract ERC1155 is IERC1155, IERC1155MetadataUri {
         return batchBalances;
     }
 
+    function setApprovalForAll(
+        address operator,
+        bool approved
+    ) external {
+        _setApprovalForAll(msg.sender, operator, approved);
+    }
+    function isApprovedForAll(
+        address account, 
+        address operator
+    ) public view returns(bool) {
+        return _operatorApprovals[account][operator];
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint id,
+        uint amount,
+        bytes calldata data
+    ) external {
+        require(
+            from==msg.sender ||
+            isApprovedForAll(from, msg.sender)
+        );
+
+        _safeTransferFrom(from, to, id, amount, data);
+    }
+
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint[] calldata ids,
+        uint[] calldata amounts,
+        bytes calldata data
+    ) external {
+        require(
+            from==msg.sender ||
+            isApprovedForAll(from, msg.sender)
+        );
+        _safeBatchTransferFrom(from, to, ids, amounts, data);
+    }
+
+    function _safeTransferFrom(
+        address from,
+        address to,
+        uint id,
+        uint amount,
+        bytes calldata data
+    ) internal {
+        require(to!=address(0));
+
+        address operator = msg.sender;
+        uint[] memory ids = _asSingletonArray(id);
+        uint[] memory amounts = _asSingletonArray(amount);
+        _beforeTokenTransfer(operator, from, to, ids, amounts, data);
+        
+        uint fromBalance = _balances[id][from];
+        require(fromBalance >= amount);
+        _balances[id][from] = fromBalance - amount;
+        _balances[id][to] += amount;
+
+        emit TransferSingle(operator, from, to, id, amount);
+
+        _afterTokenTransfer(operator, from, to, ids, amounts, data);
+        _doSafeTransferAcceptanceCheck(operator, from, to, id, amount, data);
+    }
+
+    function _safeBatchTransferFrom(
+        address from,
+        address to,
+        uint[] calldata ids,
+        uint[] calldata amounts,
+        bytes calldata data
+    ) internal {
+        require(ids.length == amounts.length);
+        address operator = msg.sender;
+        _beforeTokenTransfer(operator, from, to, ids, amounts, data);
+        
+        for (uint i = 0; i < ids.length; i++) {
+            uint id = ids[i];
+            uint amount = amounts[i];
+            uint fromBalance = _balances[id][from];
+
+            require(fromBalance >= amount);
+            _balances[id][from] = fromBalance - amount;
+            _balances[id][to] += amount;
+        }
+        emit TransferBatch(operator, from, to, ids, amounts);
+
+        _afterTokenTransfer(operator, from, to, ids, amounts, data);
+        _doSafeBatchTransferAcceptanceCheck(from, to, ids, amounts, data);
+    }
+
+
+    function _setUri(string memory newUri) internal virtual {
+        _uri = newUri;
+    }
+
+    function _setApprovalForAll( 
+        address owner,
+        address operator,
+        bool approved
+    ) internal {
+        require(owner!=operator);
+        _operatorApprovals[owner][operator] = approved;
+        emit ApprovalForAll(owner, operator, approved);
+    }
+
+    function _beforeTokenTransfer(
+        address operator,
+        address from,
+        address to,
+        uint[] memory ids,
+        uint[] memory ammount,
+        bytes memory data
+    ) internal virtual {}
+
+    function _afterTokenTransfer(
+        address operator,
+        address from,
+        address to,
+        uint[] memory ids,
+        uint[] memory ammount,
+        bytes memory data
+    ) internal virtual {}
+
+    function _doSafeTransferAcceptanceCheck (
+        address operator,
+        address from,
+        address to,
+        uint id,
+        uint amount,
+        bytes calldata data
+    ) private {
+        if(to.code.length > 0) {
+            try IERC1155Receiver(to).onERC1155Recieved(operator, from, id, amount, data) returns(bytes4 resp) {
+                if(resp != IERC1155Receiver.onERC1155Recieved.selector) {
+                    revert("rejected tokens!");
+                }
+            }
+            catch Error(string memory reason) {
+                revert(reason);
+            }
+            catch {
+                revert("no erc1155 receiver");
+            }
+        }
+    }
+
+    function _doSafeBatchTransferAcceptanceCheck (
+        address from,
+        address to,
+        uint[] calldata ids,
+        uint[] calldata amounts,
+        bytes calldata data        
+    ) private {
+        address operator = msg.sender;
+
+        if(to.code.length > 0) {
+            try IERC1155Receiver(to).onERC1155BatchRecieved(operator, from, ids, amounts, data) returns(bytes4 resp) {
+                if(resp != IERC1155Receiver.onERC1155BatchRecieved.selector) {
+                    revert("rejected tokens!");
+                }
+            }
+            catch Error(string memory reason) {
+                revert(reason);
+            }
+            catch {
+                revert("no erc1155 receiver");
+            }
+        }
+    }
+
+    function _asSingletonArray(uint element) private pure returns(uint[] memory result) {
+        result = new uint[](1);
+        result[0] = element;
+    }
 
 }
+

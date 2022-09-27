@@ -30,3 +30,7 @@ defi:
     uniswap
     aave
     balancer
+
+
+usefull:
+https://swcregistry.io/

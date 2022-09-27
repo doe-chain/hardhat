@@ -15,7 +15,7 @@ https://hardhat.org/hardhat-runner/plugins
 
 +erc20
 +erc721
-~erc1155
++erc1155
 
 oracles
 proxies/upgradable contracts

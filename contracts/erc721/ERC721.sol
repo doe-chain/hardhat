@@ -53,17 +53,17 @@ contract ERC721 is IERC721, ERC165
         return _owners[tokenId];
     }
 
-    function _baseUri() internal pure virtual returns(string memory) {
+    function _baseURI() internal pure virtual returns(string memory) {
         return "";
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override returns(bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns(bool) {
         return interfaceId == type(IERC721).interfaceId || super.supportsInterface(interfaceId);
     }
 
     //ipfs://baseurl
-    function tokenUri(uint tokenId) public view _requireMint(tokenId) returns(string memory) {
-        string memory baseURI = _baseUri();
+    function tokenURI(uint tokenId) public view virtual _requireMint(tokenId) returns(string memory) {
+        string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ?
             string(abi.encodePacked(baseURI, tokenId.toString())) :
             ""; 
@@ -96,14 +96,22 @@ contract ERC721 is IERC721, ERC165
 
     function burn(uint tokenId) public virtual {
         require(_isApprovedOrOwner(msg.sender, tokenId), "not approved or owner");
+        _burn(tokenId);
+    }
+
+    function _burn(uint tokenId) internal virtual {
         address owner = ownerOf(tokenId);
 
+        _beforeTokenTransfer(owner, address(0), tokenId);
+
         delete _tokenApprovals[tokenId];
-
         _balances[owner]--;
-
         delete _owners[tokenId];
-    }
+
+        emit Transfer(owner, address(0), tokenId);
+
+        _afterTokenTransfer(owner, address(0), tokenId);
+    }    
 
     function _safeMint(address to, uint tokenId) internal virtual {
         _mint(to, tokenId);
@@ -169,9 +177,9 @@ contract ERC721 is IERC721, ERC165
         _afterTokenTransfer(from, to, tokenId);
     }
     
-    function _beforeTokenTransfer(address from, address to, uint tokenId) internal {}
+    function _beforeTokenTransfer(address from, address to, uint tokenId) virtual internal {}
     
-    function _afterTokenTransfer(address from, address to, uint tokenId) internal {}
+    function _afterTokenTransfer(address from, address to, uint tokenId) virtual internal {}
 
 
 

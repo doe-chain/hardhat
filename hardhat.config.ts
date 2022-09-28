@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@openzeppelin/hardhat-upgrades";
+//import "@openzeppelin/contracts-upgradeable";
 // import "@sebasgoldberg/hardhat-wsprovider";
 
 import { config as dotenvConfig } from "dotenv";
@@ -23,7 +24,7 @@ const {
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: "0.8.17",
+        version: "0.8.10",
         settings: {
                 optimizer: {
                     enabled: true,
@@ -60,7 +61,6 @@ const config: HardhatUserConfig = {
         showTimeSpent: true,
         showMethodSig: true,
         onlyCalledMethods: true,
-        // currency: "RUB",
         coinmarketcap: COINMARKETCAP_API_KEY,
         // noColors: true,
         // gasPrice: 15,

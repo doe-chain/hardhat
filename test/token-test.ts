@@ -22,7 +22,16 @@ describe("Proxy token", function() {
 
         const mintTx = await token.safeMint(deployer.address, "https://site.eth");
         await mintTx.wait();
+        
+        expect(await token.balanceOf(deployer.address)).to.eq(1);
 
-        expect(token.balanceOf(deployer.address)).to.eq(1);
+
+        const NFTFactoryV2 = await ethers.getContractFactory("MyTokenV2");
+        const token2 = await upgrades.upgradeProxy(token.address, NFTFactoryV2);
+        
+        expect(await token2.balanceOf(deployer.address)).to.eq(1);
+
+        expect(await token2.test()).to.be.true;
+
     });
 });

@@ -18,7 +18,7 @@ https://hardhat.org/hardhat-runner/plugins
 +erc721
 +erc1155
 
-~proxies/upgradable contracts
++proxies/upgradable contracts
 oracles
 farming : MasterChef(sushiswap)
 flashloans

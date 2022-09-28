@@ -1,5 +1,15 @@
-node_modules
 samples
-cache
-artifacts
 .vscode
+
+node_modules
+package-lock.json
+*.env*
+!dist.env
+
+#Hardhat files
+artifacts
+cache
+coverage
+coverage.json
+typechain
+typechain-types

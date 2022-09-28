@@ -1,7 +1,8 @@
 # hardhat
 
 npm install --save-dev hardhat
-npm install --save-dev @nomicfoundation/hardhat-toolbox @nomicfoundation/hardhat-chai-matchers @nomiclabs/hardhat-ethers 'ethers@^5.0.0'
+npm install --save-dev @nomicfoundation/hardhat-toolbox'
+npm install @openzeppelin/contracts
 
 
 some main case scenarious for solidity + mocha chai tests
@@ -31,6 +32,8 @@ defi:
     aave
     balancer
 
+
+@todo make default ts hardhat project
 
 usefull:
 https://swcregistry.io/

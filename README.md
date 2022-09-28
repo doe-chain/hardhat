@@ -17,15 +17,15 @@ https://hardhat.org/hardhat-runner/plugins
 +erc721
 +erc1155
 
+~proxies/upgradable contracts
 oracles
-proxies/upgradable contracts
-farming/flashloans
+farming : MasterChef(sushiswap)
+flashloans
 governance
 assembly
 
 
 defi:
-    MasterChef(sushiswap)
     Compound
     uniswap
     aave

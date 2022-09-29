@@ -36,4 +36,5 @@ defi:
 @todo make default ts hardhat project
 
 usefull:
+https://github.com/wighawag/hardhat-deploy
 https://swcregistry.io/

@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@openzeppelin/hardhat-upgrades";
+import 'hardhat-deploy';
 //import "@openzeppelin/contracts-upgradeable";
 // import "@sebasgoldberg/hardhat-wsprovider";
 
@@ -67,6 +68,15 @@ const config: HardhatUserConfig = {
         // excludeContracts: ['Migrations.sol', 'Wallets/'],
         // src: './contracts/',
     },
+    namedAccounts: {
+        deployer: {
+            default: 0, // here this will by default take the first account as deployer
+        },
+        feeCollector:{
+            default: 1, // here this will by default take the second account as feeCollector (so in the test this will be a different account than the deployer)
+        }
+    }
+
 };
 
 export default config;

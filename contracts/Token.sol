@@ -4,7 +4,7 @@ pragma solidity ^0.8.10;
 import "./ERC20.sol";
 
 contract Token is ERC20 {
-    constructor () ERC20("BaseToken", "BT", 1000) {}
+    constructor () ERC20("Token", "BT", 1000) {}
 
 }
 

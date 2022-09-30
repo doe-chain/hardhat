@@ -19,10 +19,14 @@ https://hardhat.org/hardhat-runner/plugins
 +erc1155
 
 +proxies/upgradable contracts
-~governance
++governance
+
+~minimal proxy (eip1167)
+
 oracles
-farming : MasterChef(sushiswap)
 flashloans
+
+farming : MasterChef(sushiswap)
 assembly
 
 

@@ -19,7 +19,7 @@ https://hardhat.org/hardhat-runner/plugins
 +erc1155
 
 +proxies/upgradable contracts
-+governance
+ 
 
 ~minimal proxy (eip1167)
 

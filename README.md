@@ -19,9 +19,7 @@ https://hardhat.org/hardhat-runner/plugins
 +erc1155
 
 +proxies/upgradable contracts
- 
-
-~minimal proxy (eip1167)
++minimal proxy deployer (eip1167)
 
 oracles
 flashloans

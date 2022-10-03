@@ -21,8 +21,7 @@ const {
   // MAINNET_API_KEY = '',
   // MAINNET_PRIVATE_KEY = '',
     COINMARKETCAP_API_KEY = '',
-    GAS_REPORT = false,
-    TEST_GAS = false,
+    GAS_REPORT = true,
 } = process.env;
 
 const config: HardhatUserConfig = {
@@ -60,9 +59,9 @@ const config: HardhatUserConfig = {
         // },
     },
 
-    paths: {
-        tests: TEST_GAS ? './gas' : './test',
-    },
+    // paths: {
+    //     tests: TEST_GAS ? './gas' : './test',
+    // },
 
     gasReporter: {
         enabled: GAS_REPORT ? true : false,
@@ -70,7 +69,8 @@ const config: HardhatUserConfig = {
         showMethodSig: true,
         onlyCalledMethods: true,
         coinmarketcap: COINMARKETCAP_API_KEY,
-        // noColors: true,
+        currency: "ETH" // currency to show
+        // noColors: true, outputFile:"gas-report.txt",
         // gasPrice: 15,
         // excludeContracts: ['Migrations.sol', 'Wallets/'],
         // src: './contracts/',

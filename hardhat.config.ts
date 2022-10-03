@@ -12,6 +12,8 @@ const dotenvConfigPath: string = process.env.DOTENV_CONFIG_PATH || "./.env";
 dotenvConfig({ path: resolve(__dirname, dotenvConfigPath) });
 
 const {
+    ALCHEMY_MAINNET_URL = '',
+    ALCHEMY_API_KEY = '',
     GOERLI_URL_NET = '',
     GOERLI_API_KEY = '',
     GOERLI_PRIVATE_KEY = '',
@@ -40,6 +42,11 @@ const config: HardhatUserConfig = {
     },
 
     networks: {
+        hardhat: {
+            forking: {
+                url: ALCHEMY_MAINNET_URL+ALCHEMY_API_KEY,
+            }
+        },
         localhost: {
             url: "http://127.0.0.1:8545",
         },

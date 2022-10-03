@@ -21,9 +21,15 @@ https://hardhat.org/hardhat-runner/plugins
 +proxies/upgradable contracts
 +minimal proxy deployer (eip1167)
 
+~uniswap:
+    forking mainnet
+    uniswapv2(swap/liquidity)
+    uniswapv3(swap/liquidity)
+    dex arbitrage(?)
+
+
 oracles
 flashloans
-
 farming : MasterChef(sushiswap)
 assembly
 

@@ -21,7 +21,7 @@ const {
   // MAINNET_API_KEY = '',
   // MAINNET_PRIVATE_KEY = '',
     COINMARKETCAP_API_KEY = '',
-    GAS_REPORT = true,
+    GAS_REPORT = false,
 } = process.env;
 
 const config: HardhatUserConfig = {
@@ -48,6 +48,7 @@ const config: HardhatUserConfig = {
         },
         localhost: {
             url: "http://127.0.0.1:8545",
+            gas: 30000000,
         },
         goerli: {
             url: GOERLI_URL_NET + GOERLI_API_KEY,

@@ -3,13 +3,6 @@ import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
 
 
-//deploy logic
-//deploy proxyDeployer
-//deploy proxy1
-//call proxy1->plus plus
-//deploy proxy2
-//call proxy2->plus
-//proxy1==2 proxy2==1
 describe("Minimal test", function() {
     async function dep() {
         const[deployer] = await ethers.getSigners();

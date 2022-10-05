@@ -3,17 +3,14 @@ import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
 
 const wethAbi = require("./weth.json");
-const uniswap20Abi = require('./UniswapV2Swap.json');
 
 describe("UniswapV2 swap test", function() {
     async function dep() {
         const[deployer] = await ethers.getSigners();
 
-        const Factory = await ethers.getContractFactory("UniswapV2Swap");
+        const Factory = await ethers.getContractFactory("TestUniswap");
         const SwapContract = await Factory.deploy();
         await SwapContract.deployed();
-
-
 
         return {SwapContract, deployer}
     }
@@ -30,10 +27,8 @@ describe("UniswapV2 swap test", function() {
         const DAI_ADDR = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
         const contractDAI = new ethers.Contract(DAI_ADDR, abi, deployer);
 
-        const USDC_ADDR = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
-        const contractUSDC = new ethers.Contract(USDC_ADDR, abi, deployer);
 
-        const amountEth = ethers.utils.parseEther('10');
+        const amountEth = ethers.utils.parseEther('100');
         const txData = {
             value: amountEth,
             to: WETH_ADDR
@@ -42,17 +37,20 @@ describe("UniswapV2 swap test", function() {
         await tx.wait();
 
         let balance = await contractWETH.balanceOf(deployer.address);
+        console.log("start: WETH balance: " + balance);
 
-        console.log("WETH balance: " + balance);
+        await contractWETH.connect(deployer).approve(SwapContract.address, amountEth);
 
-        // await contractWETH.connect(deployer).withdraw(amountEth);
-        
-        // balance = await await contractWETH.balanceOf(deployer.address);
-        // console.log(balance);
+        let swapAmount = ethers.utils.parseEther('50');
+        SwapContract.connect(deployer).swap(WETH_ADDR, DAI_ADDR, amountEth, swapAmount, deployer.address);
+
+        balance = await contractDAI.balanceOf(deployer.address);
+        console.log('DAI deployer.address: '+balance);
+
 
         
-        balance = await await contractDAI.balanceOf(deployer.address);
-        console.log("dai balance: "+balance);
-        
+
+
+
     });
 });
